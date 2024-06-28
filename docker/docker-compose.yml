@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  md_manage_server:
+    container_name: md_manage_server
+    image: md_manage_server:0.1
+    environment:
+      - DATA_DEVICE_NAME=/dev/sda
+      - DB_HOST=192.168.0.254
+      - DB_PORT=3306
+      - DB_NAME=media_data
+      - DB_USER=liang
+      - DB_PWD=123456
+    ports:
+      - "8000:8000"
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - /data/md/data:/data
+      - ../src/:/work/server
+    restart: always
+  
+  redis:
+    image: redis:7.2.5
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  md_db:
+    image: mysql:8.2
+    container_name: md_db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: media_data
+      MYSQL_USER: liang
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - /data/md/db/mysql:/var/lib/mysql
+      - ./my.conf.d/my.cnf:/etc/my.cnf
+    restart: always

@@ -1,0 +1,13 @@
+django
+django-cors-headers
+django-redis
+django-redis-cache
+pymysql
+gunicorn
+cryptography
+
+pymediainfo
+ffmpy
+choicesenum
+psutil
+tzdata
